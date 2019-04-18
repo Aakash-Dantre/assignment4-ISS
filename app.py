@@ -46,9 +46,11 @@ def home():
 	return render_template('Introduction.html')
 
 @app.route("/experiment", methods=["GET"])
+@app.route("/Experiment.html", methods=["GET"])
 def experiment():
     result=[-1,-1,-1,-1]
-    return render_template('Experiment.html',result=result,flag=0,var=0)
+    return render_template('Experiment.html',result=result,flag=0,var=0,root=0)
+
 
 @app.route("/feedback", methods=["GET"])
 def feedback():
@@ -102,16 +104,17 @@ def userAdd():
     count =0
     result=[0,0,0,0]
     for i in range(8):
-        if corr_ans[i]==inpt[i]:
+        if corr_ans[i]==int(inpt[i]):
             count+=1
             result[i%4]+=1
         
     var=0
     if count==8 :
         var=1
-    return render_template('Experiment.html',result=result,flag=1,var=var)
+    return render_template('Experiment.html',result=result,flag=1,var=var,root=root)
 
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=5000)
+	# app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
 
 

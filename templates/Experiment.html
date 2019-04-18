@@ -27,14 +27,12 @@
 
     <script type="text/javascript" src="static/js/modernizr-1.5.min.js"></script>
 
-    <script src="../static/js/jquery-1.7.1.min.js"></script>
+	<script src="static/js/jquery-1.7.1.min.js"></script>
 
   <script type="text/javascript">
 
-  	var re=['{{result[0]}}','{{result[1]}}','{{result[2]}}','{{result[3]}}']
-
     $(document).ready(function() 
-    {		
+    {
       //the function is called once the document loads     
 
       $('#hidden-content').load('default.html #experiment', 
@@ -117,42 +115,62 @@
       });		
     });
 
-      
-var timeOut = window.setTimeout(function(){
-$("#paradigm").load("experiment3.php"); 
+</script>
+
+<script type="text/javascript">
+window.onload = loaderf;
+
+function loaderf()
+	{
+		var var1 =['{{ result[0] }}','{{ result[1] }}','{{ result[2] }}','{{ result[3] }}']	
+		var flag=' {{ flag }} '
+		if(flag == 1)
+		{
+			for(var i=0;i<4;i++)
+			{
+				if( var1[i] ==2) document.getElementById('check'+i%4).innerHTML='<img src="static/images/right.png" height="25" width="25" alt="Right" /> ';
+				
+				else   document.getElementById('check'+i%4).innerHTML='<img src="static/images/wrong.png" height="25" width="25" alt="Wrong" /> ';
+			}
+			var cor='{{ var }}'
+			if(cor==0)
+      		{  
+      			document.getElementById('result1').innerHTML='<br/> <p style="font-family:arial;color:red;font-size:20px;"> Error in your Add-Delete table!</p> <br/> <br/> <form action="javascript:correctTable()" > <input type="submit" value="Get Answer" 	onsubmit="correctTable();" /> </form><br/>';
+	 			document.getElementById('result2').innerHTML=''; //clear previous value stored in this section
+	
+      		}
+
+			else
+			{	document.getElementById('result1').innerHTML='<br/> <p style="font-family:arial;color:green;font-size:20px;"> Correct Answer! </p> <br/> <br/>';
+			       document.getElementById('result2').innerHTML='';	//clear previous value stored in this section
+			}
+
+		}
+		else{
+		for (i=0; i<4;i++)
+	   	document.getElementById('check'+i).innerHTML='';
+		document.getElementById('result2').innerHTML=''; 
+		document.getElementById('result1').innerHTML='';   
+	
+		}
+	}
 
 
-clearTimeout(timeOut);
-
-},
-30);
-
-
-  });
-
-function clearForm()			//clears form on selecting a different root word
+function correctTable()				//prints the correct table
 {
-        var i;
-	document.getElementById('check').innerHTML='';
-	for (i=0; i<4;i++)
-	   document.getElementById('check'+i).innerHTML='';
-	document.getElementById("addsingdr").value='आ';
-	document.getElementById("addpludr").value='आ';
-	document.getElementById("addsingob").value='आ';
-	document.getElementById("addpluob").value='आ';
-	document.getElementById("delsingdr").value='आ';
-	document.getElementById("delpludr").value='आ';
-	document.getElementById("delsingob").value='आ';   
-	document.getElementById("delpluob").value='आ';  
-	document.getElementById('result2').innerHTML=''; 
-	document.getElementById('result1').innerHTML='';   
+	//symbols array
+	var sym=['आ',	'आओं','आयें','इयाँ','इयों','ई','ए','ओं']
+	// gives type of root selected
+	var rootval='{{ root }}'
+	// answer for every root value
+	var ans =[[0,0,0,0,0,6,6,7],[5,5,5,5,5,3,5,4],[0,0,0,0,0,2,0,1],[5,5,5,5,5,5,5,4]]
+
+	var AddDel=[sym[ans[rootval][0]],sym[ans[rootval][1]],sym[ans[rootval][2]],sym[ans[rootval][3]],sym[ans[rootval][4]],sym[ans[rootval][5]],sym[ans[rootval][6]],sym[ans[rootval][7]]]
+	
+	//prints the table in result2 div element   
+     document.getElementById('result2').innerHTML='<table cellspacing="-2" cellpadding="4" border="1" style="text-align:center;"><tr><th>Delete</th><th>Add</th><th>Number</th><th>Case</th></tr> <tr><td>'+ AddDel[0]+ '</td><td>'+ AddDel[4] + '</td><td>sing</td><td>dr</td> </tr><tr><td>'+ AddDel[1]+ '</td><td>'+ AddDel[5] + '</td><td>plu</td><td>dr</td> </tr><tr><td>'+ AddDel[2]+ '</td><td>'+ AddDel[6] + '</td><td>sing</td><td>ob</td> </tr><tr><td>'+ AddDel[3]+ '</td><td>'+ AddDel[7] + '</td><td>plu</td><td>ob</td> </tr></table>';
+
 }
-
-// function correctTable()				//prints the correct table
-// {
-//      document.getElementById('result2').innerHTML='<table cellspacing="-2" cellpadding="4" border="1" style="text-align:center;"><tr><th>Delete</th><th>Add</th><th>Number</th><th>Case</th></tr> <tr><td>'+ AddDel[0]+ '</td><td>'+ AddDel[4] + '</td><td>sing</td><td>dr</td> </tr><tr><td>'+ AddDel[1]+ '</td><td>'+ AddDel[5] + '</td><td>plu</td><td>dr</td> </tr><tr><td>'+ AddDel[2]+ '</td><td>'+ AddDel[6] + '</td><td>sing</td><td>ob</td> </tr><tr><td>'+ AddDel[3]+ '</td><td>'+ AddDel[7] + '</td><td>plu</td><td>ob</td> </tr></table>';
-
-// }
 
   </script>
 
@@ -241,16 +259,17 @@ function clearForm()			//clears form on selecting a different root word
 
 <form method="post">
 <div id="mainContainer">
-
-<div id="selector_spm">
-<center>
-<b>Select a Root Word</b> <br><select name="root" id="root" onchange="clearForm();"><option value="0" select="selected">बच्चा</option><option value="0">लड़का</option><option value="0">घोड़ा</option><option value="0">गधा</option><option value="1">बच्ची</option><option value="1">लड़की</option><option value="1">नदी</option><option value="1">गली</option><option value="2">माला</option><option value="2">लता</option><option value="2">शाखा</option><option value="2">गाथा</option><option value="3">माली</option><option value="3">जोहरी</option><option value="3">कूली</option><option value="3">आदमी
-</option></select>
-</center>
+	<div id="selector_spm">
+	<center>
+	<b>Select a Root Word</b> <br><select name="root" id="root" onchange="javascript:clearForm()" ;"><option value="0" >बच्चा</option><option value="0">लड़का</option><option value="0">घोड़ा</option><option value="0">गधा</option><option value="1">बच्ची</option><option value="1">लड़की</option><option value="1" select="selected">नदी</option><option value="1">गली</option><option value="2">माला</option><option value="2">लता</option><option value="2">शाखा</option><option value="2">गाथा</option><option value="3">माली</option><option value="3">जोहरी</option><option value="3">कूली</option><option value="3">आदमी
+	</option></select>
+	</center>
+	</div>
 </div>
-
-</div>
-
+<!-- <div >{{ result[0] }}</div>
+<div >{{ result[1] }}</div>
+<div >{{ result[2] }}</div>
+<div >{{ result[3] }}</div> -->
 
 <table width="100%">
 <tbody><tr>
@@ -266,29 +285,29 @@ function clearForm()			//clears form on selecting a different root word
 <th id="check"></th>
 </tr>
 
-<tr><td><select name="delsingdr" id="delsingdr"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="4">इयाँ</option><option value="5">इयों</option><option value="6">ई</option><option value="7">ए</option><option value="8">ओं</option></select></td>
-<td><select name="addsingdr" id="addsingdr"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="4">इयाँ</option><option value="5">इयों</option><option value="6">ई</option><option value="7">ए</option><option value="8">ओं</option></select></td>
+<tr><td><select name="delsingdr" id="delsingdr"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="3">इयाँ</option><option value="4">इयों</option><option value="5">ई</option><option value="6">ए</option><option value="7">ओं</option></select></td>
+<td><select name="addsingdr" id="addsingdr"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="3">इयाँ</option><option value="4">इयों</option><option value="5">ई</option><option value="6">ए</option><option value="7">ओं</option></select></td>
 <td>sing</td><td>dr</td>
 <td id="check0">
 	
 </td>
 </tr>
 
-<tr><td><select name="delpludr" id="delpludr"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="4">इयाँ</option><option value="5">इयों</option><option value="6">ई</option><option value="7">ए</option><option value="8">ओं</option></select></td>
-<td><select name="addpludr" id="addpludr"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="4">इयाँ</option><option value="5">इयों</option><option value="6">ई</option><option value="7">ए</option><option value="8">ओं</option></select></td>
+<tr><td><select name="delpludr" id="delpludr"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="3">इयाँ</option><option value="4">इयों</option><option value="5">ई</option><option value="6">ए</option><option value="7">ओं</option></select></td>
+<td><select name="addpludr" id="addpludr"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="3">इयाँ</option><option value="4">इयों</option><option value="5">ई</option><option value="6">ए</option><option value="7">ओं</option></select></td>
 <td>plu</td><td>dr</td>
 <td id="check1">
 </td></tr>
 
-<tr><td><select name="delsingob" id="delsingob"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="4">इयाँ</option><option value="5">इयों</option><option value="6">ई</option><option value="7">ए</option><option value="8">ओं</option></select></td>
-<td><select name="addsingob" id="addsingob"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="4">इयाँ</option><option value="5">इयों</option><option value="6">ई</option><option value="7">ए</option><option value="8">ओं</option></select></td>
+<tr><td><select name="delsingob" id="delsingob"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="3">इयाँ</option><option value="4">इयों</option><option value="5">ई</option><option value="6">ए</option><option value="7">ओं</option></select></td>
+<td><select name="addsingob" id="addsingob"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="3">इयाँ</option><option value="4">इयों</option><option value="5">ई</option><option value="6">ए</option><option value="7">ओं</option></select></td>
 <td>sing</td><td>ob</td>
 <td id="check2">
 	
 </td></tr>
 
-<tr><td><select name="delpluob" id="delpluob"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="4">इयाँ</option><option value="5">इयों</option><option value="6">ई</option><option value="7">ए</option><option value="8">ओं</option></select></td>
-<td><select name="addpluob" id="addpluob"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="4">इयाँ</option><option value="5">इयों</option><option value="6">ई</option><option value="7">ए</option><option value="8">ओं</option></select></td>
+<tr><td><select name="delpluob" id="delpluob"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="3">इयाँ</option><option value="4">इयों</option><option value="5">ई</option><option value="6">ए</option><option value="7">ओं</option></select></td>
+<td><select name="addpluob" id="addpluob"><option value="0">आ</option><option value="1">आओं</option><option value="2">आयें</option><option value="3">इयाँ</option><option value="4">इयों</option><option value="5">ई</option><option value="6">ए</option><option value="7">ओं</option></select></td>
 <td>plu</td><td>ob</td>
 <td id="check3">
 	
@@ -312,7 +331,7 @@ function clearForm()			//clears form on selecting a different root word
 
 <!---<center><input type="submit" value="generate analyzer" onsubmit="showDig();" ></center>-->
 
- <center><input value="Submit" type="submit" onclick="makeFlag()"></center> 
+ <center><input value="Submit" type="submit"></center> 
 
 </form>
 <div id="result1" align="center">right hai</div>
